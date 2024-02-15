@@ -30,13 +30,20 @@ jobs:
         run: npm install @salesforce/cli --location=global
 
       # Authenticate and deploy to Dev org
-      - name: Deploy to Development org
+      - name: Deploy to Manoj org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key --username manoj@mvervedev.com --alias ManojOrg
           sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
 
       # Authenticate and deploy to Production org
-      - name: Deploy to Production org
+      - name: Deploy to Harish org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
           sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
+      
+      # Authenticate and deploy to Production org
+      - name: Deploy to Pradeep org
+        run: |
+          sf org login jwt --client-id ${{ secrets.SF_PRADEEP_CONSUMER_KEY }} --jwt-key-file assets/pradeep/server.key --username nspradeep53@gmail.com --alias PradeepOrg
+          sf project deploy start --source-dir $ROOTDIR --target-org PradeepOrg
+
