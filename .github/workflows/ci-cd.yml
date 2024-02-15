@@ -12,7 +12,7 @@ env:
   #   - name: SF_DEV_HUB_PASSWORD
   #   - name: SF_DEV_HUB_ALIAS (optional)
 
-  ROOTDIR: 'force-app/main/default/lwc/testGit'
+  ROOTDIR: 'force-app/main/default'
 
 jobs:
   build-test-deploy:
