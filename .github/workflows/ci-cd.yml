@@ -23,20 +23,20 @@ jobs:
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --location=global
 
-      - name: Deploy to Manoj org
-        run: |
-          sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key.enc --username manoj@mvervedev.com --alias ManojOrg
-          sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
-          sf apex run test --target-org ManojOrg
+      # - name: Deploy to Manoj org
+      #   run: |
+      #     sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key.enc --username manoj@mvervedev.com --alias ManojOrg
+      #     sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
+      #     sf apex run test --target-org ManojOrg
 
-      - name: Deploy to Harish org
-        run: |
-          sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
-          sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
-          sf apex run test --target-org ManojOrg
+      # - name: Deploy to Harish org
+      #   run: |
+      #     sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
+      #     sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
+      #     sf apex run test --target-org ManojOrg
 
       - name: Decrypt server key
-        run: openssl aes-256-cbc -d -in assets/pradeep/server.key.enc -out assets/server.key -k ${{ secrets.SERVER_KEY_PASSWORD }} -pbkdf2
+        run: openssl aes-256-cbc -d -in assets/pradeep/server.key.enc -out assets/server.key -k ${{ secrets.SERVER_KEY_PASSWORD_PRADEEP }} -pbkdf2
       
       - name: Deploy to Pradeep org
         run: |
