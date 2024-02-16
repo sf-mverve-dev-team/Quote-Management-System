@@ -45,5 +45,5 @@ jobs:
         run: |
           sf org login jwt --client-id ${{ secrets.SF_PRADEEP_CONSUMER_KEY }} --jwt-key-file assets/pradeep/server.key --username nspradeep53@gmail.com --alias PradeepOrg
           sf project deploy start --source-dir $ROOTDIR --target-org PradeepOrg
-          sf apex run test --target-org ManojOrg
+          sf apex run test --target-org PradeepOrg
 
