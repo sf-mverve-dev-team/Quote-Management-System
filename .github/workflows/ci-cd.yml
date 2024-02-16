@@ -38,7 +38,7 @@ jobs:
       #     sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
       #     sf apex run test --target-org ManojOrg
 
-      - name: Decrypt server key
+      - name: Decrypt Pradeep server key
         run: openssl aes-256-cbc -d -in assets/pradeep/server.key.enc -out assets/pradeep/server.key -k ${{ secrets.SERVER_KEY_PASSWORD_PRADEEP }} -pbkdf2
       
       - name: Deploy to Pradeep org
