@@ -2,11 +2,10 @@ name: Salesforce CI/CD
 
 on:
   push:
-    branches: [ main ]
+    branches: [main]
 
 env:
-  ROOTDIR: 'force-app/main/default/'
-
+  ROOTDIR: "force-app/main/default/"
 
 jobs:
   deploy:
@@ -32,18 +31,20 @@ jobs:
           sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
           sf apex run test --target-org ManojOrg
 
-      # - name: Deploy to Harish org
-      #   run: |
-      #     sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
-      #     sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
-      #     sf apex run test --target-org ManojOrg
+      - name: Decrypt Harish server key
+        run: openssl aes-256-cbc -d -in assets/Harish/server.key.enc -out assets/Harish/server.key -k ${{ secrets.SERVER_KEY_PASSWORD_HARISH }} -pbkdf2
+
+      - name: Deploy to Harish org
+        run: |
+          sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
+          sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
+          sf apex run test --target-org HarishOrg
 
       - name: Decrypt Pradeep server key
         run: openssl aes-256-cbc -d -in assets/pradeep/server.key.enc -out assets/pradeep/server.key -k ${{ secrets.SERVER_KEY_PASSWORD_PRADEEP }} -pbkdf2
-      
+
       - name: Deploy to Pradeep org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_PRADEEP_CONSUMER_KEY }} --jwt-key-file assets/pradeep/server.key --username nspradeep53@gmail.com --alias PradeepOrg
           sf project deploy start --source-dir $ROOTDIR --target-org PradeepOrg
           sf apex run test --target-org PradeepOrg
-
