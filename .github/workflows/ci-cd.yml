@@ -5,17 +5,10 @@ on:
     branches: [ main ]
 
 env:
-  # Secrets:
-  #   - name: SF_CONSUMER_KEY_DEV
-  #   - name: SF_USERNAME_DEV
-  #   - name: SF_DEV_HUB_USERNAME
-  #   - name: SF_DEV_HUB_PASSWORD
-  #   - name: SF_DEV_HUB_ALIAS (optional)
-
-  ROOTDIR: 'force-app/main/default/lwc/testGit'
+  ROOTDIR: 'force-app/main/default/'
 
 jobs:
-  build-test-deploy:
+  deploy:
     runs-on: ubuntu-latest
     steps:
       - name: Checkout repo
@@ -24,26 +17,29 @@ jobs:
       - name: Setup Node
         uses: actions/setup-node@v2
         with:
-          node-version: 17
+          node-version: 20
 
       - name: Install Salesforce CLI
         run: npm install @salesforce/cli --location=global
 
-      # Authenticate and deploy to Dev org
       - name: Deploy to Manoj org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key --username manoj@mvervedev.com --alias ManojOrg
           sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
+          sf apex run test --target-org ManojOrg
 
-      # Authenticate and deploy to Production org
       - name: Deploy to Harish org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_HARISH_CONSUMER_KEY }} --jwt-key-file assets/Harish/server.key --username harish@mverve.com --alias HarishOrg
           sf project deploy start --source-dir $ROOTDIR --target-org HarishOrg
+          sf apex run test --target-org ManojOrg
+
+      - name: Decrypt server key
+        run: openssl aes-256-cbc -d -in assets/pradeep/server.key.enc -out assets/server.key -k ${{ secrets.SERVER_KEY_PASSWORD }} -pbkdf2
       
-      # Authenticate and deploy to Production org
       - name: Deploy to Pradeep org
         run: |
           sf org login jwt --client-id ${{ secrets.SF_PRADEEP_CONSUMER_KEY }} --jwt-key-file assets/pradeep/server.key --username nspradeep53@gmail.com --alias PradeepOrg
           sf project deploy start --source-dir $ROOTDIR --target-org PradeepOrg
+          sf apex run test --target-org ManojOrg
 
