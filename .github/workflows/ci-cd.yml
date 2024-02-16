@@ -32,7 +32,7 @@ jobs:
       # Authenticate and deploy to Dev org
       - name: Deploy to Manoj org
         run: |
-          sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key --username manoj@mvervedev.com --alias ManojOrg
+          sf org login jwt --client-id ${{ secrets.SF_MANOJ_CONSUMER_KEY }} --jwt-key-file assets/Manoj/server.key.enc --username manoj@mvervedev.com --alias ManojOrg
           sf project deploy start --source-dir $ROOTDIR --target-org ManojOrg
 
       # Authenticate and deploy to Production org
